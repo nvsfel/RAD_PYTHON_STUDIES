@@ -3,18 +3,25 @@ from tkinter import messagebox
 def calcular_desconto():
     try:
         preco_original = float(entry_preco.get())
+        if preco_original <0:
+            preco_original=preco_original*-1
+            #VERIFICAÇÃO PARA EVITAR ENTRADA NEGATIVA
         desconto = float(entry_desconto.get())
+        if desconto <0:
+            desconto=desconto*-1
+            #VERIFICAÇÃO PARA EVITAR ENTRADA NEGATIVA
+        
         desc = ((preco_original * desconto)/100)
         novo_preco = preco_original - desc
 
-        if desc <= 20:
+        if desconto <= 20:
             promo = "Promoção comum"
-        elif 20 < desc <= 49:
+        elif 20 < desconto <= 49:
             promo = "Boa promoção!"
         else:
             promo = "SUPER PROMOÇÃO!!!"
         
-        messagebox.showinfo("Resultado",f"Novo preço é: ${novo_preco:.2f}:\n\n{promo}")
+        messagebox.showinfo("LEITOR",f"Novo preço é: ${novo_preco:.2f}:\n\n{promo}")
 
     except ValueError:
         messagebox.showerror("Erro", "Por favor, insira valores válidos.")
@@ -41,13 +48,6 @@ botao_calcular = tk.Button(janela, text="CALCULAR NOVO PREÇO", command=calcular
 botao_calcular.grid(row = 3, column=0, columnspan=2, pady = 20)
 janela.mainloop()
 
-
-#com base no código acima, de forma estruturada, simule um programa com TKINTER com as seguintes funcionalidades:
-#1 - um campo para digitar o nome de um produto
-#2 - um campo para digitar o preço original
-#3 - um campo para digitar o percentual do desconto;
-#4 - ao clicar em 'CALCULAR DESCONTO', abrir uma caixa de mensagem exibindo o nome do produto e o preço
-#e uma mensagem mostrando se o desconto for até 20: "promocao comum", entre 21 e 49 "boa promoção", acima de 50 "super promocao!";
 
 
 
