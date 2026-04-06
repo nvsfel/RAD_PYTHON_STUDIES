@@ -1,8 +1,8 @@
 import os
 
 def criar_arquivo():
-    nome=input("Digite o nome do arquivo(ex:teste.txt):")
-    conteudo=input("Digite o conteúdo inicial: ")
+    
+    conteudo = entry_conteudo.get()
     with open(nome, "w", encoding="utf-8") as f: f.write(conteudo)
 
     print("Arquivo criado com sucesso em:",os.path.abspath(nome))
@@ -36,7 +36,36 @@ def excluir_arquivo():
     else:
         print("Arquivo não encontrado!")
 
-def menu():
+import tkinter as tk
+
+def criar_arquivo_kamui():
+    criar_kamui = tk.Toplevel()
+    criar_kamui.title("Kamui: Criar Arquivo")
+    tk.Label(criar_kamui, text="Digite o nome do arquivo(ex: teste.txt):").pack(pady=10)
+    entry_conteudo = tk.Entry(criar_kamui)
+    entry_conteudo.pack(pady=10)
+    tk.Button(criar_kamui, text="Criar arquivo", command = criar_arquivo).pack(pady=10)
+
+    
+    
+    
+
+main_kamui = tk.Tk()
+main_kamui.title("KAMUI")
+
+tk.Label(main_kamui, text="GERENCIADOR DE ARQUIVOS").pack()
+
+tk.Button(main_kamui, text="Criar arquivo", command = criar_arquivo_kamui).pack(pady=10)
+tk.Button(main_kamui, text="Ler arquivo", command = ler_arquivo).pack(pady=10)
+tk.Button(main_kamui, text="Adicionar conteúdo", command = adicionar_conteudo).pack(pady=10)
+tk.Button(main_kamui, text="Excluir arquivo", command = excluir_arquivo).pack(pady=10)
+
+
+
+
+
+
+"""def menu():
     while True:
         print("\n===GERENCIADOR DE ARQUIVOS---")
         print("1 - Criar arquivo")
@@ -60,3 +89,4 @@ def menu():
         else:
             print("Opção inválida!")
 menu()
+"""
