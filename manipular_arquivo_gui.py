@@ -15,6 +15,8 @@ def criar_arquivo():
     messagebox.showinfo("Aviso", f"Arquivo criado com sucesso em:{os.path.abspath(conteudo)}")
 
 def ler_arquivo():
+
+
     nome=input("Digite o nome do arquivo:")
     if os.path.exists(nome):
         with open(nome,"r", encoding="utf-8") as f:
@@ -62,8 +64,22 @@ def criar_arquivo_kamui():
     entry_conteudo.pack(pady=10)
     tk.Button(criar_kamui, text="Criar arquivo", command = criar_arquivo).pack(pady=10)
 
-   
-    
+def ler_arquivo_kamui():
+    ler_kamui = tk.Toplevel()
+    ler_kamui.title("Kamui: Ler Arquivo")
+    tk.Label(ler_kamui, text="Digite o nome do arquivo:").pack(pady=10)
+    global nome_arquivo
+    nome_arquivo = tk.Entry(ler_kamui)
+    nome_arquivo.pack(pady=10)
+    tk.Button(ler_kamui, text="Pesquisar", command = ler_arquivo).pack(pady=10)
+    tk.Label(ler_kamui, text="Conteúdo do arquivo:").pack(pady=10)
+    tk.Label(
+        ler_kamui,
+        width=20,
+        relief="ridge",
+        justify="center"
+        ).pack()
+    #LIGAR INTERFACE À FUNÇÃO!
     
     
 
@@ -73,7 +89,7 @@ main_kamui.title("KAMUI")
 tk.Label(main_kamui, text="GERENCIADOR DE ARQUIVOS").pack()
 
 tk.Button(main_kamui, text="Criar arquivo", command = criar_arquivo_kamui).pack(pady=10)
-tk.Button(main_kamui, text="Ler arquivo", command = ler_arquivo).pack(pady=10)
+tk.Button(main_kamui, text="Ler arquivo", command = ler_arquivo_kamui).pack(pady=10)
 tk.Button(main_kamui, text="Adicionar conteúdo", command = adicionar_conteudo).pack(pady=10)
 tk.Button(main_kamui, text="Excluir arquivo", command = excluir_arquivo).pack(pady=10)
 
