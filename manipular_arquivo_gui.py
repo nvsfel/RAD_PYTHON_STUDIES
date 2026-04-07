@@ -1,11 +1,18 @@
 import os
+import tkinter as tk
+from tkinter import messagebox
 
 def criar_arquivo():
     
-    conteudo = entry_conteudo.get()
+    nome = entry_nome.get()
+    conteudo = entry_conteudo.get(1.0, tk.END)
+    if conteudo == "" or nome == "":
+        messagebox.showwarning("Aviso", "Preencha todos os campos!")
+        return
+    
     with open(nome, "w", encoding="utf-8") as f: f.write(conteudo)
 
-    print("Arquivo criado com sucesso em:",os.path.abspath(nome))
+    messagebox.showinfo("Aviso", f"Arquivo criado com sucesso em:{os.path.abspath(conteudo)}")
 
 def ler_arquivo():
     nome=input("Digite o nome do arquivo:")
@@ -36,16 +43,26 @@ def excluir_arquivo():
     else:
         print("Arquivo não encontrado!")
 
-import tkinter as tk
 
 def criar_arquivo_kamui():
     criar_kamui = tk.Toplevel()
     criar_kamui.title("Kamui: Criar Arquivo")
     tk.Label(criar_kamui, text="Digite o nome do arquivo(ex: teste.txt):").pack(pady=10)
-    entry_conteudo = tk.Entry(criar_kamui)
+    global entry_nome
+    entry_nome= tk.Entry(criar_kamui)
+    entry_nome.pack(pady=10)
+    tk.Label(criar_kamui,text="Digite o conteúdo do arquivo:").pack(pady = 10)
+    global entry_conteudo
+    entry_conteudo = tk.Text(
+        criar_kamui,
+        width = 20,
+        height = 10,
+        relief = "ridge"
+        )
     entry_conteudo.pack(pady=10)
     tk.Button(criar_kamui, text="Criar arquivo", command = criar_arquivo).pack(pady=10)
 
+   
     
     
     
