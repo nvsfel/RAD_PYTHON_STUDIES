@@ -12,15 +12,15 @@ def criar_arquivo():
     
     with open(nome, "w", encoding="utf-8") as f: f.write(conteudo)
 
-    messagebox.showinfo("Aviso", f"Arquivo criado com sucesso em:{os.path.abspath(conteudo)}")
+    messagebox.showinfo("Aviso", f"Arquivo criado com sucesso em:{os.path.abspath(nome)}")
 
 def ler_arquivo():
 
 
-    nome=input("Digite o nome do arquivo:")
+    nome = nome_arquivo.get()
     if os.path.exists(nome):
         with open(nome,"r", encoding="utf-8") as f:
-            print("\nConteúdo do arquivo:\n")
+            
             print(f.read())
 
     else:
@@ -66,6 +66,7 @@ def criar_arquivo_kamui():
 
 def ler_arquivo_kamui():
     ler_kamui = tk.Toplevel()
+    ler_kamui.geometry("420x420")
     ler_kamui.title("Kamui: Ler Arquivo")
     tk.Label(ler_kamui, text="Digite o nome do arquivo:").pack(pady=10)
     global nome_arquivo
@@ -74,28 +75,57 @@ def ler_arquivo_kamui():
     tk.Button(ler_kamui, text="Pesquisar", command = ler_arquivo).pack(pady=10)
     tk.Label(ler_kamui, text="Conteúdo do arquivo:").pack(pady=10)
     tk.Label(
-        ler_kamui,
-        width=20,
+        ler_kamui, #essa label precisa receber algumas propriedades diferentes pra funcionar como eu quero
+        width=50,
+        height=20,
         relief="ridge",
         justify="center"
-        ).pack()
+        ).pack(pady=10)
     #LIGAR INTERFACE À FUNÇÃO!
     
     
 
 main_kamui = tk.Tk()
+main_kamui.geometry("420x320")
 main_kamui.title("KAMUI")
 
-tk.Label(main_kamui, text="GERENCIADOR DE ARQUIVOS").pack()
+tk.Label(main_kamui, text="GERENCIADOR DE ARQUIVOS").pack(pady=10)
 
-tk.Button(main_kamui, text="Criar arquivo", command = criar_arquivo_kamui).pack(pady=10)
-tk.Button(main_kamui, text="Ler arquivo", command = ler_arquivo_kamui).pack(pady=10)
-tk.Button(main_kamui, text="Adicionar conteúdo", command = adicionar_conteudo).pack(pady=10)
-tk.Button(main_kamui, text="Excluir arquivo", command = excluir_arquivo).pack(pady=10)
+tk.Button(
+    main_kamui,
+    text="Criar arquivo",
+    command = criar_arquivo_kamui,
+    width = 20,
+    height = 2,
+    font = "Helvetica"
+    ).pack(pady=10)
 
+tk.Button(
+    main_kamui,
+    text="Ler arquivo",
+    command = ler_arquivo_kamui,
+    width = 20,
+    height = 2,
+    font = "Helvetica"
+    ).pack(pady=10)
 
+tk.Button(
+    main_kamui,
+    text="Adicionar Conteúdo",
+    command = ler_arquivo_kamui,
+    width = 20,
+    height = 2,
+    font = "Helvetica"
+    ).pack(pady=10)
 
-
+tk.Button(
+    main_kamui,
+    text="Excluir arquivo",
+    command = ler_arquivo_kamui,
+    width = 20,
+    height = 2,
+    font = "Helvetica"
+    ).pack(pady=10)
 
 
 """def menu():
