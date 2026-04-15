@@ -15,16 +15,14 @@ def criar_arquivo():
     messagebox.showinfo("Aviso", f"Arquivo criado com sucesso em:{os.path.abspath(nome)}")
 
 def ler_arquivo():
-
-
     nome = nome_arquivo.get()
     if os.path.exists(nome):
         with open(nome,"r", encoding="utf-8") as f:
             
-            print(f.read())
+            output_ler_arquivo.config(text=f.read())
 
     else:
-        print("Arquivo não encontrado!")
+        messagebox.showwarning("Erro","Arquivo não encontrado!")
 
 def adicionar_conteudo():
     nome=input("Digite o nome do arquivo :")
@@ -74,14 +72,15 @@ def ler_arquivo_kamui():
     nome_arquivo.pack(pady=10)
     tk.Button(ler_kamui, text="Pesquisar", command = ler_arquivo).pack(pady=10)
     tk.Label(ler_kamui, text="Conteúdo do arquivo:").pack(pady=10)
-    tk.Label(
+    global output_ler_arquivo
+    output_ler_arquivo = tk.Label(
         ler_kamui, #essa label precisa receber algumas propriedades diferentes pra funcionar como eu quero
         width=50,
         height=20,
         relief="ridge",
         justify="center"
-        ).pack(pady=10)
-    #LIGAR INTERFACE À FUNÇÃO!
+        )
+    output_ler_arquivo.pack(pady=10)
     
     
 
