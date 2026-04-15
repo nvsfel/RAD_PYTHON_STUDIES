@@ -6,20 +6,25 @@ e calcular a média das notas. """
 
 
 
-alunos = {}
 
+alunos = {}
+global num_alunos
+nota_turma = 0.0
+global media
 while True:
     nome = input("Digite o nome do aluno (ou 'sair' para encerrar):")
     nome=nome.title()
-    global num_alunos
-    global media
+        
     if nome.lower() == 'sair':
         break
     if nome.lower() =='media':
-        for nome in alunos.items():
-            num_alunos+=1
-            media = alunos[nota]/num_alunos
-        print(f"A turma tem {n_alunos} e a média é {alunos[notas]}.")
+        num_alunos=len(alunos)
+        for nome, nota in alunos.items():
+            nota_turma += nota
+            
+            
+        media = nota_turma/num_alunos
+        print(f"A turma tem {num_alunos} alunos e a média da turma é {media:.1f}.")
         break
     nota = float(input(f"Digite a nota de {nome}:"))
     alunos[nome] = nota
@@ -28,6 +33,8 @@ while True:
     print("\n==Lista de alunos e notas==")
 
     for nome, nota in alunos.items():
-        print(f"{nome}:{nota:.1f}")
+        print(f"{nome}:{nota:.2f}")
+
+        
 
         
