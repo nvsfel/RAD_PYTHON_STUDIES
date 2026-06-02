@@ -1,15 +1,19 @@
-def calcular_vm():
+def calcular_vm(distancia, tempo):
+    #nome nos parâmetros não interfere na variável. pode ser qualquer nome.
     try:
-        velocidade_media = (dist/100)/(tempo/60)
+        velocidade_media = (distancia/100)/(tempo/60)
 
         if velocidade_media < 8:
             status = "Lento!"
-        elif velocidade_media >8 <= velocidade_media <12:
+        elif 8 <= velocidade_media <12:
             status = "Moderado..."
-        elif velocidade_media >12<= velocidade_media <16:
+        elif 12 <= velocidade_media <16:
             status = "Rápido!"
         else:
             status = "Elite."
+            
+            return velocidade_media, status #retornar ambos valores
+        
     except ValueError:
         print("Insira valores válidos!")
         return
@@ -26,11 +30,20 @@ while True:
     raias = int(input("Quantos atletas serão avaliados?"))
     
     for corredores in range(raias):
-        nome = input("Nome do atleta:")
-        dist = input("Digite, em metros, a distância percorrida")
-        atletas[nome] = dist
-        tempo = input("Digite, em minutos, o tempo percorrido")
-        atletas[nome] = tempo
+        nome = input("Nome do atleta:").title()
+        dist = float(input("Digite, em metros, a distância percorrida"))
+        tempo = float(input("Digite, em minutos, o tempo percorrido"))
+        
+        vm_atleta, status = calcular_vm(dist, tempo)
+        
+        atletas[nome] = {
+            "distancia" : dist,
+            "tempo" : tempo,
+            "velocidade" : vm_atleta,
+            "status" : status
+            }
+
+   
 
     print(atletas)
     
