@@ -1,0 +1,147 @@
+import tkinter as tk
+from tkinter import messagebox
+import sqlite3
+
+#_______banco
+
+conexao = sqlite3.connect("alunos.db")
+cursor = conexao.cursor()
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS alunos(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT,
+    matricula TEXT,
+    av1 REAL,
+    av2 REAL,
+    media REAL,
+    status TEXT
+    )
+    """)
+
+conexao.commit()
+#__________funcoes
+
+def calcular_media(av1, av2):
+    return (av1+av2)/2
+
+def verificar_status(media):
+    if 4 < media < 6.99:
+        return "Recuperação"
+    elif media < 4:
+        return "Reprovado"
+    else:
+        return "Aprovado"
+        
+def cadastrar():
+    
+    nome = entrada_nome.get()
+    matricula = entrada_matricula.get()
+    
+    try:
+        av1 = float(entrada_av1.get())
+        if 0 > av1 or av1 > 10:
+            messagebox.showerror("Erro", "Digite notas válidas!")
+            return
+        av2 = float(entrada_av2.get())
+        if 0 > av2 or av2 > 10:
+            messagebox.showerror("Erro", "Digite notas válidas!")
+            return
+        #verificação para notas fora da escala 0-10
+    except:
+        messagebox.showerror("Erro", "Digite notas válidas!")
+        return
+    if nome == "" or matricula =="":
+        messagebox.showwarning("Atenção", "Preencha todos os campos!")
+        return
+    #verificação para campos incorretos
+    
+    if not matricula.isdigit() or nome.isdigit():
+        messagebox.showwarning("Atenção", "Preencha os campos corretamente!")
+        return
+    media = calcular_media(av1, av2)
+    status = verificar_status(media)
+    cursor.execute("""
+        INSERT INTO alunos (nome, matricula, av1, av2, media, status)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """, (nome, matricula, av1, av2, media, status))
+    conexao.commit()
+    messagebox.showinfo("Sucesso", "Aluno cadastrado!")
+    limpar_campos()
+
+def consultar():
+    lista.delete(0, tk.END)
+    matricula = entrada_busca.get()
+    if matricula =="":
+        messagebox.showwarning("Atenção", "Digite a matrícula!")
+        return
+    cursor.execute("""
+    SELECT nome, matricula, av1, av2, media, status
+    FROM alunos
+    WHERE matricula = ?
+    """,(matricula,))
+    resultado = cursor.fetchone()
+
+    if resultado:
+        lista.insert(tk.END,
+                     f"{resultado[0]} | Mat: {resultado[1]} | AV1:{resultado[2]} | AV2: {resultado[3]} | Média: {resultado[4]:.2f}| {resultado[5]}")
+    else:
+            messagebox.showinfo("Resultado", "Aluno não encontrado!")
+            
+def listar_todos():
+    lista.delete(0, tk.END)
+    cursor.execute("SELECT nome, matricula, av1, av2, media, status FROM alunos")
+    dados = cursor.fetchall()
+    for aluno in dados:
+        lista.insert(tk.END,
+                     f"{aluno[0].title()} | Mat {aluno[1]} | Média {aluno[4]:.2f} | {aluno[5]}")
+def limpar_campos():
+    entrada_nome.delete(0,tk.END)
+    entrada_matricula.delete(0,tk.END)
+    entrada_av1.delete(0, tk.END)
+    entrada_av2.delete(0, tk.END)
+def limpar_lista():
+    lista.delete(0, tk.END)
+
+def fechar_programa():
+    window.destroy()
+
+#_____interface
+
+window = tk.Tk()
+window.title("Sistema de Alunos")
+window.geometry("600x520")
+window.bind_class("Button","<Return>", lambda event: event.widget.invoke())
+window.bind_class("Button","<KP_Enter>", lambda event: event.widget.invoke())
+
+#__cadastro
+tk.Label(window, text ="Nome").pack()
+entrada_nome = tk.Entry(window)
+entrada_nome.pack()
+tk.Label(window, text="Matrícula").pack()
+entrada_matricula = tk.Entry(window)
+entrada_matricula.pack()
+tk.Label(window, text="Nota AV1").pack()
+entrada_av1 = tk.Entry(window)
+entrada_av1.pack()
+tk.Label(window, text="Nota AV2").pack()
+entrada_av2 = tk.Entry(window)
+entrada_av2.pack()
+tk.Button(window, text="Cadastrar", command= lambda: cadastrar()).pack(pady=5)
+
+#____consulta
+
+tk.Label(window, text ="Buscar por Matrícula").pack()
+entrada_busca = tk.Entry(window)
+entrada_busca.pack()
+tk.Button(window, text="Consultar", command= lambda: consultar()).pack(pady=5)
+tk.Button(window, text="Listar Todos", command= lambda: listar_todos()).pack(pady=5)
+tk.Button(window, text="Limpar Lista", command= lambda: limpar_lista()).pack(pady=5)
+tk.Button(window, text="Encerrar Sistema", command= lambda: fechar_programa()).pack(pady=5)
+
+
+#____lista
+
+lista = tk.Listbox(window, width=80)
+lista.pack(pady=10)
+window.mainloop()
+conexao.close()
